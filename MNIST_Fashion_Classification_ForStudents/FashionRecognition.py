@@ -11,6 +11,8 @@ from keras.layers import Flatten
 from keras.layers import Dropout
 from keras.optimizers import SGD
 from matplotlib import pyplot
+from tensorflow.keras.optimizers import Adam
+import tensorflow as tf
 import cv2
 
 
@@ -94,13 +96,15 @@ def defineModel(input_shape, num_classes):
     model.add(Flatten(input_shape=input_shape))
 
     # TODO - Application 1 - Step 6 - Define a dense layer of size 16
-    model.add(Dense(256, activation='relu'))  # , kernel_initializer='he_uniform')
+    model.add(Dense(16, activation='relu'))  # , kernel_initializer='he_uniform')
 
     # TODO - Application 1 - Step 6 - Define the output layer
     model.add(Dense(num_classes, activation='softmax'))
 
     # TODO - Application 1 - Step 6 - Compile the model
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    adam_perso = tf.keras.optimizers.Adam(learning_rate=0.001)
+
+    model.compile(loss='categorical_crossentropy', optimizer=adam_perso, metrics=['accuracy'])
 
     return model
 
