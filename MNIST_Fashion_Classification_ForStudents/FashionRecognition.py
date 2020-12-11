@@ -68,7 +68,7 @@ def prepareData(trainX, trainY, testX, testY):
     # TODO - Application 1 - Step 5 - Transform the classes labels into a binary matrix
     trainY = np_utils.to_categorical(trainY)
     testY = np_utils.to_categorical(testY)
-    num_classes = testY.shape[1]
+    #num_classes = testY.shape[1]
 
     return trainX, trainY, testX, testY
 
@@ -90,21 +90,21 @@ def defineModel(input_shape, num_classes):
     model.add(MaxPooling2D(pool_size=(2, 2)))
 
     # TODO - Application 1 - Exercise 6 - Add a dropout layer
-    # model.add(Dropout(0.2))
+    #model.add(Dropout(0.2))
 
     # TODO - Application 1 - Step 6 - Define the flatten layer
     model.add(Flatten(input_shape=input_shape))
 
     # TODO - Application 1 - Step 6 - Define a dense layer of size 16
-    model.add(Dense(16, activation='relu'))  # , kernel_initializer='he_uniform')
+    model.add(Dense(256, activation='relu'))  # , kernel_initializer='he_uniform')
 
     # TODO - Application 1 - Step 6 - Define the output layer
     model.add(Dense(num_classes, activation='softmax'))
 
     # TODO - Application 1 - Step 6 - Compile the model
-    adam_perso = tf.keras.optimizers.Adam(learning_rate=0.001)
+    adam_perso = tf.keras.optimizers.Adam(learning_rate=0.01)
 
-    model.compile(loss='categorical_crossentropy', optimizer=adam_perso, metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     return model
 
@@ -117,13 +117,13 @@ def defineModel(input_shape, num_classes):
 #####################################################################################################################
 #####################################################################################################################
 def trainAndEvaluateClassic(trainX, trainY, testX, testY):
-    accuracy = 0
-
     # Application 1 - Call the defineModel function
     model = defineModel((28, 28, 1), 10)
 
     # TODO - Application 1 - Step 7 - Train the model
-    model.fit(trainX, trainY, epochs=5, batch_size=32, validation_data=(testX, testY), verbose=1)
+    model.fit(trainX, trainY, epochs=10, batch_size=32, validation_data=(testX, testY), verbose=1)
+
+    model.save('Fashion_MNIST_model.h5')
 
     # TODO - Application 1 - Step 7 - Evaluate the model
     loss, accuracy = model.evaluate(testX, testY, verbose=1)
